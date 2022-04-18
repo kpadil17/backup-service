@@ -26,22 +26,22 @@ class S3Backup extends Command
     /**
      * Execute the console command.
      *
-     * @return int
+     * @return void
      */
-    public function handle()
+    public function __invoke() : void
     {
+        ini_set('memory_limit', -1);
+
         try {
-            $date = Carbon::yesterday()->format('Y/m/d');
-            $filePath = "$date/dosa_backup.zip";
+            $filePath = "PH-Manual-dumps/dumps.zip";
             if (!Storage::disk('s3')->exists($filePath)) {
                 Log::error("$filePath not found");
             } else {
                 $object = Storage::disk('s3')->get($filePath);
-                Storage::put('assets.zip', $object);
+                Storage::put('dumps.zip', $object);
             }
         } catch (\Throwable $e) {
             Log::error($e->getMessage());
         }
-        return 0;
     }
 }
