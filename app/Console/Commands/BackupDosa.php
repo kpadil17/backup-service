@@ -7,7 +7,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
-class S3Backup extends Command
+class BackupDosa extends Command
 {
     /**
      * The name and signature of the console command.
@@ -32,16 +32,19 @@ class S3Backup extends Command
     {
         ini_set('memory_limit', -1);
 
+        $date = Carbon::now()->format('Y/m/d');
+
         try {
             $filePath = "PH-Manual-dumps/dumps.zip";
             if (!Storage::disk('s3')->exists($filePath)) {
                 Log::error("$filePath not found");
             } else {
+                Log::info("DOSA Database Backup Success");
                 $object = Storage::disk('s3')->get($filePath);
-                Storage::put('dumps.zip', $object);
+                Storage::put("backups/dosa/$date/dumps.zip", $object);
             }
         } catch (\Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error($e);
         }
     }
 }

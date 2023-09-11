@@ -19,6 +19,10 @@ class Kernel extends ConsoleKernel
         $schedule->command('backup:dosa')
             ->timezone('Asia/Manila')
             ->monthlyOn('1', '03:00');
+
+        $schedule->command('backup:marketplace')
+            ->timezone('Asia/Manila')
+            ->monthlyOn('1', '03:00');
     }
 
     /**
