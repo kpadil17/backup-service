@@ -34,8 +34,7 @@ class BackupEcommerce extends Command
         ini_set('memory_limit', -1);
 
         $date = Carbon::now()->format('Y/m/d');
-        $fileName = sprintf('backup_%s.sql.zip', '20231110');
-        // $fileName = sprintf('backup_%s.sql.zip', Carbon::now()->format("Ymd"));
+        $fileName = sprintf('backup_%s.sql.zip', Carbon::now()->format("Ymd"));
         try {
             
             if (!Storage::disk('s3_ecommerce')->exists($fileName)) {
