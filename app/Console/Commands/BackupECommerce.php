@@ -8,14 +8,14 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Spatie\DbDumper\Databases\MySql;
 
-class BackupMarketplace extends Command
+class BackupEcommerce extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'backup:marketplace';
+    protected $signature = 'backup:ecommerce';
 
     /**
      * The console command description.
@@ -34,15 +34,16 @@ class BackupMarketplace extends Command
         ini_set('memory_limit', -1);
 
         $date = Carbon::now()->format('Y/m/d');
-        $fileName = sprintf('backup_%s.sql.zip', Carbon::now()->format("Ymd"));
+        $fileName = sprintf('backup_%s.sql.zip', '20231110');
+        // $fileName = sprintf('backup_%s.sql.zip', Carbon::now()->format("Ymd"));
         try {
             
-            if (!Storage::disk('s3_marketplace')->exists($fileName)) {
+            if (!Storage::disk('s3_ecommerce')->exists($fileName)) {
                 Log::error("$fileName not found");
             } else {
-                Log::info("Marketplace Database Backup Success");
-                $object = Storage::disk('s3_marketplace')->get($fileName);
-                Storage::put("backups/marketplace/$date/marketplace_dumps.sql.zip", $object);
+                Log::info("Ecommerce Database Backup Success");
+                $object = Storage::disk('s3_ecommerce')->get($fileName);
+                Storage::put("backups/ecommerce/$date/ecommerce_dumps.sql.zip", $object);
             }
         } catch (\Throwable $e) {
             Log::error($e);
